@@ -1,8 +1,13 @@
 package org.example;
 
 public class MyStack {
-    int[] data = new int[5];
+    int INITIAL_CAPACITY = 10;
+    int[] data;
     int pointer = -1;
+
+    public MyStack() {
+        this.data = new int[INITIAL_CAPACITY];
+    }
 
     public void push(int element) {
         this.data[pointer + 1] = element;
