@@ -3,7 +3,6 @@ package org.example;
 public class MyStack {
     int[] data = new int[5];
     int pointer = -1;
-    Integer[] data2 = new Integer[5];
 
     public void push(int element) {
         this.data[pointer + 1] = element;
