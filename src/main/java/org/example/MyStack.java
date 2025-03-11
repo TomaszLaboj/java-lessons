@@ -25,5 +25,5 @@ public class MyStack {
         return pointer + 1;
     };
 }
-
+//YT video explaining stac, queue and deque
 //https://www.youtube.com/watch?v=A3ZUpyrnCbM
