@@ -1,9 +1,9 @@
 package org.example;
 
 public class StackImplementation implements MyStack {
-    int CAPACITY = 10;
-    int[] data;
-    int size = 0;
+    private int CAPACITY = 10;
+    private int[] data;
+    private int size = 0;
     public StackImplementation() {
         data = new int[CAPACITY];
     }
