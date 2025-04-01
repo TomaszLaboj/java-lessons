@@ -1,15 +1,16 @@
 package org.example;
 
-public class StackImplementation implements MyStack {
+public class StackImplementation<T> implements MyStack<T> {
     private int CAPACITY = 10;
-    private int[] data;
+    private T[] data;
     private int size = 0;
     public StackImplementation() {
-        data = new int[CAPACITY];
+        T[] data = (T[]) new Object[CAPACITY];
+
     }
-    public void push(int element) {
+    public void push(T element) {
         if (size == CAPACITY) {
-            int[] dataTransfer = new int[CAPACITY];
+            T[] dataTransfer = (T[]) new Object[CAPACITY];
 
             for (int i = 0; i < data.length; i++) {
                 dataTransfer[i] = data[i];
@@ -17,7 +18,7 @@ public class StackImplementation implements MyStack {
 
             CAPACITY = CAPACITY * 2;
 
-            data = new int[CAPACITY];
+            data = (T[]) new Object[CAPACITY];
 
             for (int i = 0; i < dataTransfer.length; i++) {
                 data[i] = dataTransfer[i];
@@ -30,18 +31,18 @@ public class StackImplementation implements MyStack {
         }
     }
 
-    public int top() throws Exception {
+    public T top() throws Exception {
         if (size == 0) {
             throw new Exception("Stack is empty");
         }
         return data[size - 1];
     }
 
-    public int pop() throws Exception{
+    public T pop() throws Exception{
         if (size == 0) {
             throw new Exception("Stack is empty");
         }
-        int value = data[size - 1];
+        T value = data[size - 1];
         size--;
         return value;
     }
