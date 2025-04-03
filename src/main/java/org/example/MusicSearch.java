@@ -8,18 +8,49 @@ public class MusicSearch {
     static Map<String, Artist> data = new HashMap<>();
 
     public static void main(String[] args) {
-        addData("Phil Collins", new Date(1950, 12, 1), "UK", "Face value", "45:10", "1980", "In the air tonight", "Phil Collins", "05:00");
+        addData("Phil Collins",
+                new Date(1950, 12, 1),
+                "UK",
+                "Face value",
+                "45:10",
+                "1980",
+                "In the air tonight",
+                "Phil Collins",
+                "05:00");
+
+
         System.out.println(getData("Phil Collins", "Face value", "In the air tonight"));
+
     }
 
     public static String getData(String artistName, String albumName, String songName) {
         Artist artist = data.get(artistName);
         Album album = artist.getAlbum(albumName);
         Song song = album.getSong(songName);
-        return new MusicData(artist.artistName, artist.born, artist.country, album.albumTitle, album.length, album.length, song.songTitle, song.musicAndLyricsAuthor, song.trackLength).toString();
+        return new MusicData(
+                artist.getArtistName(),
+                artist.getBorn(),
+                artist.getCountry(),
+                album.getAlbumTitle(),
+                album.getLength(),
+                album.getReleaseYear(),
+                song.getSongTitle(),
+                song.getMusicAndLyricsAuthor(),
+                song.getTrackLength())
+                .toString();
     }
 
-    public static void addData(String artistName, Date born, String country, String albumName, String length, String yearOfRelase, String songTitle, String musicAndLyricsAuthor, String trackLength) {
+    public static void addData(
+            String artistName,
+            Date born,
+            String country,
+            String albumName,
+            String length,
+            String yearOfRelase,
+            String songTitle,
+            String musicAndLyricsAuthor,
+            String trackLength
+    ) {
         Artist artist = new Artist(artistName, born, country);
         Album album = new Album(albumName, length, yearOfRelase);
         Song song = new Song(songTitle, musicAndLyricsAuthor, trackLength);
@@ -88,6 +119,18 @@ public class MusicSearch {
         public void addAlbum(String name, Album album) {
             albums.put(name, album);
         }
+
+        public String getArtistName() {
+            return artistName;
+        }
+
+        public Date getBorn() {
+            return born;
+        }
+
+        public String getCountry() {
+            return country;
+        }
     };
 
     private static class Album {
@@ -109,6 +152,18 @@ public class MusicSearch {
         public void addSong(String title, Song song) {
             songs.put(title, song);
         }
+
+        public String getAlbumTitle() {
+            return albumTitle;
+        }
+
+        public String getLength() {
+            return length;
+        }
+
+        public String getReleaseYear() {
+            return releaseYear;
+        }
     };
 
     public static class Song {
@@ -120,6 +175,18 @@ public class MusicSearch {
             this.songTitle = songTitle;
             this.musicAndLyricsAuthor = musicAndLyricsAuthor;
             this.trackLength = trackLength;
+        }
+
+        public String getSongTitle() {
+            return songTitle;
+        }
+
+        public String getMusicAndLyricsAuthor() {
+            return musicAndLyricsAuthor;
+        }
+
+        public String getTrackLength() {
+            return trackLength;
         }
     };
 }
