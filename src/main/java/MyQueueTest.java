@@ -24,6 +24,5 @@ public class MyQueueTest {
         queue.enqueue(7);
         queue.enqueue(7);
         System.out.println("testing size after exceeding 10 elements: " + queue.size());
-
     }
 }
