@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MergeSort {
     public static void main(String[] args) {
-        int[] list = {1,6,34,9,0,2,8};
+        int[] list = {1,6,34,9,0,2,8,23,23,55,1,765};
         List<MyQueue<Integer>> splittedList = split(list);
         List<MyQueue<Integer>> sorted = sort(splittedList);
         int[] sortedList = convert(sorted);
@@ -41,9 +41,7 @@ public class MergeSort {
     static List<MyQueue<Integer>> sort(List<MyQueue<Integer>> listToSort) {
 
         List<MyQueue<Integer>> sorted = new ArrayList<>();
-        for (MyQueue<Integer> q : listToSort) {
-            System.out.println("after sort" + q.toString());
-        }
+
         int numberOfPairs;
         if (listToSort.size() % 2 == 0) {
             numberOfPairs = Math.floorDiv(listToSort.size(), 2);
@@ -92,9 +90,7 @@ public class MergeSort {
             }
 
             sorted.add(i, sortedQueue);
-            for(MyQueue<Integer> q : sorted) {
-                System.out.println(index + q.toString());
-            }
+
         }
 
         if (sorted.size() > 1) {
