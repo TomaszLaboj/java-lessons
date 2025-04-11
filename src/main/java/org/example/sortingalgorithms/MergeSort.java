@@ -54,7 +54,9 @@ public class MergeSort {
 
             if (index + 1 == listToSort.size()) {
                 try {
-                    sortedQueue.enqueue(listToSort.get(index).dequeue());
+                    MyQueue<Integer> queue = listToSort.get(index);
+
+                    sortedQueue = queue;
                 } catch (Exception e) {}
             } else {
                 MyQueue<Integer> left = listToSort.get(index);
@@ -63,7 +65,7 @@ public class MergeSort {
                     try {
                         Integer leftNumber = (Integer) left.peek();
                         Integer rightNumber = (Integer) right.peek();
-                        if (leftNumber < rightNumber) {
+                        if (leftNumber <= rightNumber) {
                             left.dequeue();
                             sortedQueue.enqueue(leftNumber);
                         } else {
@@ -92,7 +94,9 @@ public class MergeSort {
             sorted.add(i, sortedQueue);
 
         }
-
+        for (MyQueue<Integer> q : sorted) {
+            System.out.println(q.toString());
+        }
         if (sorted.size() > 1) {
             return sort(sorted);
         } else {
