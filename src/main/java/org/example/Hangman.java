@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Hangman {
     static List<String> words = Arrays.asList("cat", "dog", "house", "approach", "summer", "learn", "initialise", "programming");
-    static String randomWord;
     static List<String> images = Arrays.asList(
             "",
             "|\n|\n|\n|\n|\n|\n|\n-",
@@ -20,54 +19,51 @@ public class Hangman {
             "_______\n|/    |\n|     O\n|    /|\\\n|     |\n|\n|\n|\n-",
             "_______\n|/    |\n|     O\n|    /|\\\n|     |\n|    /\n|\n|\n-",
             "_______\n|/    |\n|     O\n|    /|\\\n|     |\n|    / \\\n|\n|\n-");
+    static String randomWord;
+    static int incorrectGuesses;
+    static boolean runGame;
+    static Scanner scanner = new Scanner(System.in);
+    static List<String> guessedLetters;
+    static String hiddenWord;
+
 
     public static void main(String[] args) {
-        randomWord = words.get((int) (Math.random() * words.size()));
-        boolean flag = false;
-        Scanner scanner = new Scanner(System.in);
-        int incorrectGuesses = 0;
-        List<String> guessedLetters = new ArrayList<>(randomWord.length());
-
-        while (!flag) {
-            String message = "Guess a single letter or entire word";
-            System.out.println(message);
-            System.out.println(createHiddenWord(randomWord, guessedLetters));
-            System.out.println(createImage(incorrectGuesses, images));
+        startGame();
+        while (runGame) {
+            System.out.println(hiddenWord);
             String userGuess = scanner.nextLine();
 
 
             if (userGuess.length() == 0) {
-                System.out.println(message);
+                System.out.println("Type a single letter or entire word and press enter");
             } else if (userGuess.length() > 1) {
                 if (randomWord.equals(userGuess.toString())) {
-                    System.out.println("Congratulations you have guessed the word!");
+                    handleGameWon();
                 } else {
-                    System.out.println("I'm afraid this is incorrect guess");
-                    if (incorrectGuesses == 10) {
-                        flag = true;
-                        System.out.println("you are hanged, game over");
-                    }
-                    incorrectGuesses++;
+                    handleIncorrectGuess();
                 }
             } else if (userGuess.length() == 1) {
                 if (randomWord.contains(userGuess)) {
-                    System.out.println("Well done, ");
-                    guessedLetters.add(userGuess);
-                } else {
-                    System.out.println("I'm afraid this is incorrect guess");
-                    if (incorrectGuesses == 10) {
-                        flag = true;
-                        System.out.println("The word was: " + randomWord + ". You are hanged, game over");
+                    System.out.println("Well done");
+                   guessedLetters.add(userGuess);
+                   hiddenWord = createHiddenWord(randomWord, guessedLetters);
+                    if (randomWord.equals(hiddenWord.toString())) {
+                        handleGameWon();
                     }
-                    incorrectGuesses++;
+                } else {
+                    handleIncorrectGuess();
                 }
             }
         }
     }
 
-    static String chooseRandomWord(List<String> words) {
-        int randomNumber = (int) (Math.random() * words.size());
-        return words.get(randomNumber);
+    static void startGame() {
+        randomWord = words.get((int) (Math.random() * words.size()));
+        incorrectGuesses = 0;
+        runGame = true;
+        guessedLetters = new ArrayList<>(randomWord.length());
+        hiddenWord = createHiddenWord(randomWord, guessedLetters);
+        System.out.println("Guess a single letter or entire word");
     }
 
     static String createHiddenWord(String word, List<String> guessedLetters) {
@@ -77,11 +73,38 @@ public class Hangman {
                 hiddenWord.set(i, "-");
             }
         }
-
         return String.join("", hiddenWord);
     }
 
-    static String createImage(int incorrectGuesses, List<String> images) {
-        return images.get(incorrectGuesses);
+    static void createImage() {
+        System.out.println(images.get(incorrectGuesses));
+    }
+
+    static void handleGameWon() {
+        System.out.println(hiddenWord);
+        System.out.println("Congratulations you have guessed the word!");
+        playAgain();
+    }
+
+    static void handleIncorrectGuess() {
+        System.out.println("I'm afraid this is incorrect guess.");
+        incorrectGuesses++;
+        createImage();
+        if (incorrectGuesses >= 10) {
+            runGame = false;
+            System.out.println("The word was: " + randomWord + ". Game over.");
+            playAgain();
+        }
+    }
+
+    static void playAgain() {
+        System.out.println("Do you want to play again? (Y/N)");
+        String answer = scanner.nextLine();
+        if (answer.toLowerCase().equals("y")) {
+            startGame();
+        } else if(answer.toLowerCase().equals("n")) {
+            System.out.println("Goodbye");
+            runGame = false;
+        }
     }
 }
