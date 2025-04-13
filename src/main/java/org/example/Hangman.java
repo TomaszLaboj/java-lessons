@@ -81,7 +81,7 @@ public class Hangman {
     }
 
     static void handleGameWon() {
-        System.out.println(hiddenWord);
+        System.out.println(randomWord);
         System.out.println("Congratulations you have guessed the word!");
         playAgain();
     }
