@@ -81,7 +81,7 @@ public class Matrices {
 
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[0].length; col++) {
-                result[row][col] = matrix[(matrix[0].length - 1) - col][col];
+                result[row][col] = matrix[(matrix[0].length - 1) - col][row];
             }
         }
 
