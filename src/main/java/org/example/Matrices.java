@@ -25,20 +25,20 @@ public class Matrices {
 
     public static void main(String[] args) {
         int[][] addedMatrices = addMatrices(matrix1, matrix2);
+        System.out.println("matrix1");
+        displayMatrix(matrix1);
+        System.out.println("matrix2");
+        displayMatrix(matrix2);
         System.out.println("Added matrices:");
-        for (int[] array : addedMatrices){
-            for (int num : array) {
-                System.out.println(num);
-            }
-        }
+        displayMatrix(addedMatrices);
 
         int[][] multipliedMatrices = multiplyMatrices(matrix2, matrix3);
+        System.out.println("matrix2");
+        displayMatrix(matrix2);
+        System.out.println("matrix3:");
+        displayMatrix(matrix3);
         System.out.println("Multiplied matrices:");
-        for (int[] array : multipliedMatrices){
-            for (int num : array) {
-                System.out.println(num);
-            }
-        }
+        displayMatrix(multipliedMatrices);
 
         int[][] rotatedMatrix = rotateMatrix(matrix4);
         System.out.println("Original matrix");
@@ -81,8 +81,7 @@ public class Matrices {
 
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[0].length; col++) {
-                result[row][col] = matrix[(matrix.length-1)-row][col];
-                //    row col
+                result[row][col] = matrix[(matrix[0].length - 1) - col][col];
             }
         }
 
@@ -92,7 +91,7 @@ public class Matrices {
     public static void displayMatrix(int[][] matrix) {
         for (int[] row : matrix) {
             for(int num : row) {
-                System.out.print(num);
+                System.out.print(num + " ");
             }
             System.out.println();
         }
