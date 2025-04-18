@@ -8,21 +8,33 @@ public class Matrices {
     };
 
     static int[][] matrix2 = {
-            {3, 4},
-            {5, 7},
-            {0, 10}
+            {3, 4, 3, 3, 8, 1},
+            {3, 4, 3, 3, 7, 11},
+            {3, 4, 3, 2, 2, 1},
+            {3, 4, 3, 1, 5, 13}
     };
     static int[][] matrix3 = {
             {2, 4, 5, 6},
-            {1, 2, 2, 3}
+            {1, 2, 2, 3},
+            {1, 1, 1, 2},
+            {3, 5, 1, 2},
+            {1, 5, 1, 2},
+            {5, 5, 7, 2},
     };
-
+// 4*6 * 6 * 4  = 4*4
     static int[][] matrix4 = {
             {1, 2, 3},
             {4, 5, 6},
             {7, 8, 9}
     };
-
+    static int[][] matrix5 = {
+        {1,2,3}
+    };
+    static int[][] matrix6 = {
+            {1},
+            {5},
+            {2}
+    };
     public static void main(String[] args) {
         int[][] addedMatrices = addMatrices(matrix1, matrix2);
         System.out.println("matrix1");
@@ -32,11 +44,11 @@ public class Matrices {
         System.out.println("Added matrices:");
         displayMatrix(addedMatrices);
 
-        int[][] multipliedMatrices = multiplyMatrices(matrix2, matrix3);
-        System.out.println("matrix2");
-        displayMatrix(matrix2);
-        System.out.println("matrix3:");
-        displayMatrix(matrix3);
+        int[][] multipliedMatrices = multiplyMatrices(matrix5, matrix6);
+        System.out.println("matrix5");
+        displayMatrix(matrix5);
+        System.out.println("matrix6:");
+        displayMatrix(matrix6);
         System.out.println("Multiplied matrices:");
         displayMatrix(multipliedMatrices);
 
@@ -69,7 +81,9 @@ public class Matrices {
 
         for (int row = 0; row < matrix1.length; row++){
             for (int col = 0; col < matrix2[0].length; col++) {
-                result[row][col] = (matrix1[row][col-col] * matrix2[row-row][col]) + (matrix1[row][col-(col-1)] * matrix2[row-(row-1)][col]);
+                for (int i = 0; i < matrix2.length; i++) {
+                    result[row][col] = result[row][col] + (matrix1[row][i] * matrix2[i][col]);
+                }
             }
         }
 
