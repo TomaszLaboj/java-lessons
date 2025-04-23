@@ -2,6 +2,7 @@ package org.example;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MyQueue<T> implements MyQueueInterface {
@@ -25,6 +26,14 @@ public class MyQueue<T> implements MyQueueInterface {
         }
         data[size] = (T) element;
         size++;
+    }
+
+    @Override
+    public String toString() {
+        return "MyQueue{" +
+                "size=" + size +
+                ", data=" + Arrays.toString(data) +
+                '}';
     }
 
     @Override
