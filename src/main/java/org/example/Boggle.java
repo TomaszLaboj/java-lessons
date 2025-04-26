@@ -7,21 +7,18 @@ import java.util.stream.Collectors;
 
 public class Boggle {
     static private String[][] grid = {
-            {"A", "T", "E", "E"},
-            {"A", "P", "Y", "O"},
-            {"T", "I", "N", "U"},
-            {"E", "D", "S", "E"}
+            {"A", "A", "A", "A"},
+            {"A", "P", "A", "A"},
+            {"A", "A", "A", "A"},
+            {"A", "A", "A", "T"}
     };
 
-    static  String[] listOfWords = {"PAT"};
+    static  String[] listOfWords = {"PAT", "TYPE", "TEPID", "HOUSE", "APPLE", "USE", "PET", "PINS", "GOAT", "JAVA", "NOT", "TAP"};
 
 
     public static void main(String[] args) {
-        Queue<String> splitWordQueue = new LinkedList<>(Arrays.asList("AT".split("")));
-        boolean wordFound = checkLetters(1, 1, splitWordQueue, grid, 1, 1);
-        System.out.println(wordFound);
-//        List<String> foundWords = findWords(grid);
-//        System.out.println(foundWords);
+        List<String> foundWords = findWords(grid);
+        System.out.println(foundWords);
     }
 
     static List<String> findWords(String[][] letterGrid){
@@ -42,12 +39,6 @@ public class Boggle {
         return foundWords;
     };
 
-    /*
-    0,0 0,1, 0,2
-    1,0      1,2
-    2,0 2,1, 2,2     1, 1
-     */
-
     static boolean pointIsNotPreviousPoint(int x, int y, int prevX, int prevY) {
         boolean flag = true;
         if (x == prevX) {
@@ -57,31 +48,41 @@ public class Boggle {
         }
         return flag;
     }
-    static private boolean checkLetters(int row, int col,Queue<String> word, String[][] letterGrid, int prevRow, int prevCol) {
+
+    static private boolean checkLetters(List<Point> allCoordinatesWithLetters,Queue<String> word, String[][] letterGrid, int prevRow, int prevCol) {
         Queue<String> wordCopy = new LinkedList<>(word);
         String letter = wordCopy.poll();
-        List<Point> coordinates = calculateCoordinates(row, col);
-        List<Point> coordinatesToCheck = coordinates
-                .stream()
-                .filter(point -> point.x >= 0)
-                .filter(point -> point.x < letterGrid.length)
-                .filter(point -> point.y >= 0)
-                .filter(point -> point.y < letterGrid[0].length)
-                .filter(point -> pointIsNotPreviousPoint(point.x, point.y, prevRow, prevCol))
-                .collect(Collectors.toList());
-        System.out.println(coordinates);
-        System.out.println(coordinatesToCheck);
-        System.out.println(wordCopy.size());
+        boolean letterFound = false;
         boolean wordFound = false;
+        List<Point> coordinatesWithFoundLetters = new ArrayList<>();
+        Point examinedPoint = new Point();
 
-        for (Point p : coordinatesToCheck) {
-            if (wordCopy.size() == 0 && letterGrid[p.x][p.y].equals(letter)) {
-                wordFound = true;
-                coordinatesToCheck.clear();
-                break;
-            }else if (letterGrid[p.x][p.y].equals(letter)) {
-                checkLetters(p.x, p.y, wordCopy, letterGrid, row, col);
+        for (Point p1 : allCoordinatesWithLetters) {
+            examinedPoint.x = p1.x;
+            examinedPoint.y = p1.y;
+            List<Point> coordinates = calculateCoordinates(p1.x, p1.y);
+            List<Point> coordinatesToCheck = coordinates
+                    .stream()
+                    .filter(point -> point.x >= 0)
+                    .filter(point -> point.x < letterGrid.length)
+                    .filter(point -> point.y >= 0)
+                    .filter(point -> point.y < letterGrid[0].length)
+                    .filter(point -> pointIsNotPreviousPoint(point.x, point.y, prevRow, prevCol))
+                    .collect(Collectors.toList());
+
+            for (Point p2 : coordinatesToCheck) {
+                if (wordCopy.size() == 0 && letterGrid[p2.x][p2.y].equals(letter)) {
+                    wordFound = true;
+                }
+                if (wordCopy.size() != 0 && letterGrid[p2.x][p2.y].equals(letter)) {
+                    letterFound = true;
+                    coordinatesWithFoundLetters.add(new Point(p2.x, p2.y));
+                }
             }
+        }
+
+        if (letterFound) {
+            return checkLetters(coordinatesWithFoundLetters, wordCopy, letterGrid, examinedPoint.x, examinedPoint.y);
         }
         return wordFound;
     };
