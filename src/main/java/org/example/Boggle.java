@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 public class Boggle {
     static private String[][] grid = {
             {"P", "A", "A", "A"},
-            {"A", "P", "A", "A"},
+            {"A", "P", "C", "A"},
             {"T", "A", "A", "A"},
             {"A", "A", "A", "T"}
     };
 
-    static  String[] listOfWords = {"PAT", "TAP"};
+    static  String[] listOfWords = {"PAT", "TAP", "CAT"};
 
     public static void main(String[] args) {
         List<String> foundWords = findWords(grid);
@@ -40,7 +40,15 @@ public class Boggle {
                 }
             }
         }
-        return foundWords;
+        List<String> removedDuplicates = new ArrayList<>();
+
+        for (String word : foundWords) {
+            if (!removedDuplicates.contains(word)) {
+                removedDuplicates.add(word);
+            }
+        };
+
+        return removedDuplicates;
     };
 
     static private boolean checkSurroundingLetters(Point firstLetterCoordinate, Queue<String> word, String[][] letterGrid, Point previousLetterCoordinate) {
