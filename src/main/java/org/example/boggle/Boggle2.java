@@ -1,22 +1,19 @@
 package org.example.boggle;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 //https://excalidraw.com/#json=nCQftgvXbKEsbdCeHWh0f,PwNFDG5Zx7Sn7oBD44Pohg
 public class Boggle2 {
     static private String[][] grid = {
-            {"P", "A", "T", "I"},
-            {"A", "S", "A", "K"},
-            {"B", "R", "H", "D"},
-            {"C", "D", "E", "Z"}
+            {"P", "A", "E", "I"},
+            {"P", "S", "A", "K"},
+            {"A", "R", "H", "D"},
+            {"T", "P", "A", "T"}
     };
 
-    static String[] testWords = {"PAT", "TAP", "APT", "APP", "TA", "T", "COD", "TT", "CAT", "DOG", "RED", "REDATAP", "REDATAC" +
-            ""};
+    static String[] testWords = {"PAT", "TAP", "PAT"};
 
     public static void main(String[] args) {
         List<String> foundWords = findWords();
@@ -79,7 +76,9 @@ public class Boggle2 {
 
             if (letterFound) {
                 for (Point coordinateWithFoundLetter : coordinatesWithFoundLetters) {
-                    return checkSurroundingLetters(coordinatesWithFoundLetters, wordCopy, updatedPreviousLetterCoordinates);
+                    if (checkSurroundingLetters(coordinatesWithFoundLetters, wordCopy, updatedPreviousLetterCoordinates)) {
+                        return checkSurroundingLetters(coordinatesWithFoundLetters, wordCopy, updatedPreviousLetterCoordinates);
+                    }
                 }
             }
 
