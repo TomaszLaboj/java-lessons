@@ -1,30 +1,33 @@
-package org.example;
+package org.example.boggle;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 //https://excalidraw.com/#json=nCQftgvXbKEsbdCeHWh0f,PwNFDG5Zx7Sn7oBD44Pohg
 public class Boggle2 {
     static private String[][] grid = {
-            {"P", "A", "T", "-"},
-            {"-", "-", "A", "-"},
-            {"-", "R", "-", "D"},
-            {"-", "-", "E", "-"}
+            {"P", "A", "T", "I"},
+            {"A", "S", "A", "K"},
+            {"B", "R", "H", "D"},
+            {"C", "D", "E", "Z"}
     };
 
-    static String[] listOfWords = {"PAT", "TAP", "APT", "APP", "TA", "T", "COD", "TT", "CAT", "DOG", "RED", "REDATAP", "REDATAC" +
+    static String[] testWords = {"PAT", "TAP", "APT", "APP", "TA", "T", "COD", "TT", "CAT", "DOG", "RED", "REDATAP", "REDATAC" +
             ""};
 
     public static void main(String[] args) {
         List<String> foundWords = findWords();
+
         System.out.println(foundWords);
     }
 
     static List<String> findWords() {
         List<String> foundWords = new ArrayList<>();
 
-        for (String word : listOfWords) {
+        for (String word : testWords) {
             List<Point> letterCoordinates = new ArrayList<>();
             Queue<String> splitWord = new LinkedList<>(Arrays.asList(word.split("")));
             String firstLetter = splitWord.poll();

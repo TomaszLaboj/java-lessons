@@ -1,4 +1,4 @@
-package org.example;
+package org.example.boggle;
 
 import java.awt.*;
 import java.util.*;
@@ -32,6 +32,8 @@ public class Boggle {
                     if (firstLetter.equals(grid[row][col])) {
                         firstLetterCoordinates.offer(new Point(row, col));
                     }
+
+
                 }
             }
             for (Point p : firstLetterCoordinates) {
