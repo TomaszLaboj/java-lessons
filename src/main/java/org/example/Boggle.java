@@ -51,7 +51,7 @@ public class Boggle {
         return removedDuplicates;
     };
 
-    static private boolean checkSurroundingLetters(Point firstLetterCoordinate, Queue<String> word, String[][] letterGrid, Point previousLetterCoordinate) {
+    private static boolean checkSurroundingLetters(Point firstLetterCoordinate, Queue<String> word, String[][] letterGrid, Point previousLetterCoordinate) {
         Queue<String> wordCopy = new LinkedList<>(word);
         String letterToSearch = wordCopy.poll();
         boolean letterFound = false;
