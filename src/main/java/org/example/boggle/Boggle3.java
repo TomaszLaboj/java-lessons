@@ -14,19 +14,23 @@ public class Boggle3 {
             {'T', 'P', 'A', 'T'}
     };
 
-    static String[] testWords = {"PAT", "TAP", "PAT"};
+    static String[] testWords = {"RAT"};
 
     public static void main(String[] args) {
-        List<String> foundWords = findWords();
-
+        List<String> foundWords = new ArrayList<>();
+        for (String word : testWords) {
+            if (checkWord(word)) {
+                foundWords.add(word);
+            }
+        }
         System.out.println(foundWords);
     }
 
-    boolean checkWord(String word) {
+    static boolean checkWord(String word) {
         return check(word, 0, new ArrayList<>());
     }
 
-    boolean check(String word, int iteration, List<Point> coordinates) {
+    static boolean check(String word, int iteration, List<Point> coordinates) {
         if (word.length() == iteration) return true;
         List<Point> updatedCoordinates = coordinates;
 
