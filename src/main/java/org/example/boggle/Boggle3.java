@@ -14,7 +14,7 @@ public class Boggle3 {
             {'T', 'P', 'A', 'T'}
     };
 
-    static String[] testWords = {"RAT"};
+    static String[] testWords = {"RAT", "CAT", "TARAS"};
 
     public static void main(String[] args) {
         List<String> foundWords = new ArrayList<>();
