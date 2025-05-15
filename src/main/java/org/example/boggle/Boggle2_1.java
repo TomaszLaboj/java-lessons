@@ -11,11 +11,11 @@ public class Boggle2_1 {
     static private String[][] grid = {
             {"C", "A", "T", "I"},
             {"P", "S", "A", "K"},
-            {"A", "R", "H", "D"},
-            {"T", "C", "A", "T"}
+            {"A", "P", "H", "D"},
+            {"T", "A", "A", "T"}
     };
 
-    static String[] testWords = {"CAT", "TAP", "PAT"};
+    static String[] testWords = {"TAP", "PAT", "CAT"};
 
     public static void main(String[] args) {
         List<String> foundWords = findWords();
@@ -57,7 +57,7 @@ public class Boggle2_1 {
             updatedPreviousLetterCoordinates.add(new Point(coordinate.x, coordinate.y));
 
             List<Point> coordinates = calculateSurroundingCoordinates(coordinate.x, coordinate.y);
-            List<Point> coordinatesToCheck = coordinates  // 0,2 , 1,2 , 1,1 , 1,0
+            List<Point> coordinatesToCheck = coordinates
                     .stream()
                     .filter(point -> point.x >= 0)
                     .filter(point -> point.x < grid.length)
@@ -67,7 +67,9 @@ public class Boggle2_1 {
                     .collect(Collectors.toList());
 
             for (Point coordinateToCheck : coordinatesToCheck) {
-                return checkSurroundingLetters(coordinateToCheck, wordCopy, updatedPreviousLetterCoordinates);
+                if (checkSurroundingLetters(coordinateToCheck, wordCopy, updatedPreviousLetterCoordinates)) {
+                    return checkSurroundingLetters(coordinateToCheck, wordCopy, updatedPreviousLetterCoordinates);
+                }
             }
 
         }
