@@ -1,7 +1,5 @@
 package org.example.sortingalgorithms;
 
-import org.example.MyQueue;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
