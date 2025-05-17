@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 //https://excalidraw.com/#json=nCQftgvXbKEsbdCeHWh0f,PwNFDG5Zx7Sn7oBD44Pohg
 public class Boggle2_1 {
-    static private String[][] grid = {
-            {"C", "A", "T", "I"},
-            {"P", "S", "A", "K"},
-            {"A", "P", "H", "D"},
-            {"T", "A", "A", "T"}
+    static private Character[][] grid = {
+            {'C', 'A', 'T', 'I'},
+            {'P', 'S', 'A', 'K'},
+            {'A', 'P', 'H', 'D'},
+            {'T', 'A', 'A', 'T'}
     };
 
-    static String[] testWords = {"TAP", "PAT", "CAT"};
+    static String[] testWords = {"CAT", "TAP", "PAT"};
 
     public static void main(String[] args) {
         List<String> foundWords = findWords();
@@ -27,13 +27,9 @@ public class Boggle2_1 {
         List<String> foundWords = new ArrayList<>();
 
         for (String word : testWords) {
-
-            Queue<String> splitWord = new LinkedList<>(Arrays.asList(word.split("")));
-
-
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[0].length; col++) {
-                    if(checkSurroundingLetters(new Point(row, col), splitWord, new ArrayList<>())) {
+                    if(checkSurroundingLetters(new Point(row, col), word, new ArrayList<>())) {
                         foundWords.add(word);
                     }
                 }
@@ -43,17 +39,14 @@ public class Boggle2_1 {
         return foundWords;
     }
 
-    private static boolean checkSurroundingLetters(Point coordinate, Queue<String> word, List<Point> previousLetterCoordinates) {
-        if (word.size() == 0) {
+    private static boolean checkSurroundingLetters(Point coordinate, String word, List<Point> previousLetterCoordinates) {
+        if (word.length() == 0) {
             return true;
         }
-        Queue<String> wordCopy = new LinkedList<>(word); // T
-        String letterToSearch = wordCopy.poll(); // A
-
+        Character letterToSearch = word.toCharArray()[0];
         if (letterToSearch.equals(grid[coordinate.x][coordinate.y])) {
 
-
-            List<Point> updatedPreviousLetterCoordinates = new ArrayList<>(List.copyOf(previousLetterCoordinates)); // 0,0 , 0,1
+            List<Point> updatedPreviousLetterCoordinates = new ArrayList<>(List.copyOf(previousLetterCoordinates));
             updatedPreviousLetterCoordinates.add(new Point(coordinate.x, coordinate.y));
 
             List<Point> coordinates = calculateSurroundingCoordinates(coordinate.x, coordinate.y);
@@ -63,12 +56,13 @@ public class Boggle2_1 {
                     .filter(point -> point.x < grid.length)
                     .filter(point -> point.y >= 0)
                     .filter(point -> point.y < grid[0].length)
-                    .filter(point -> pointIsNotInTheList(point, updatedPreviousLetterCoordinates))
+                    .filter(point -> !updatedPreviousLetterCoordinates.contains(point))
                     .collect(Collectors.toList());
 
             for (Point coordinateToCheck : coordinatesToCheck) {
-                if (checkSurroundingLetters(coordinateToCheck, wordCopy, updatedPreviousLetterCoordinates)) {
-                    return checkSurroundingLetters(coordinateToCheck, wordCopy, updatedPreviousLetterCoordinates);
+                boolean found = checkSurroundingLetters(coordinateToCheck, word.substring(1), updatedPreviousLetterCoordinates);
+                if (found) {
+                    return true;
                 }
             }
 
@@ -77,25 +71,6 @@ public class Boggle2_1 {
     return false;
     };
 
-    static boolean pointIsNotInTheList(Point point, List<Point> listOfPoints) {
-        boolean flag = true;
-        for (Point pointFromTheList : listOfPoints) {
-            if (pointsAreTheSame(point.x, point.y, pointFromTheList.x, pointFromTheList.y)) {
-                flag = false;
-            }
-        }
-        return flag;
-    }
-
-    static boolean pointsAreTheSame(int x, int y, int secondX, int secondY) {
-        boolean flag = false;
-        if (x == secondX) {
-            if (y == secondY) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
     static private List<Point> calculateSurroundingCoordinates(int row, int col) {
         List<Point> result = new ArrayList<>();
         result.add(new Point(row, col + 1));
