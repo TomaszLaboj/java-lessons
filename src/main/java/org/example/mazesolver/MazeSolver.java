@@ -34,8 +34,11 @@ public class MazeSolver {
         List<Point> coordinatesToCheck = new ArrayList<>();
         coordinatesToCheck.add(startingPoing);
 
-        int shortest = findShortestPath(coordinatesToCheck, new ArrayList<>(), 1);
-        return shortest;
+        if (coordinatesToCheck.size() == 0) {
+            return 0;
+        }
+
+        return findShortestPath(coordinatesToCheck, new ArrayList<>(), 1);
     }
 
     static int findShortestPath(List<Point> coordinatesToCheck, List<Point> previousCoordinates, int count) {
