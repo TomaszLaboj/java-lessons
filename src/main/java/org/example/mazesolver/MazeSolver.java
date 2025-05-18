@@ -2,7 +2,6 @@ package org.example.mazesolver;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,49 +17,59 @@ public class MazeSolver {
 
     public static void main(String[] args) {
 
-        System.out.println(findShortestPathLength());
+        System.out.println(findShortesPath());
     }
 
-    static int findShortestPathLength() {
-        List<List<Point>> paths = new ArrayList<>();
+    static int findShortesPath() {
+
+        Point startingPoing = new Point();
         for (int row = 0; row < maze.length; row++) {
             for (int col = 0; col < maze[0].length; col++) {
                 if(maze[row][col].equals('S')) {
-                    List<Point> path = new ArrayList<>();
-                    path.add(new Point(row, col));
-                    paths.add(findPath(new Point(row, col), path));
+                    startingPoing.setLocation(row, col);
                 }
             }
         }
-        int shortest = paths.get(0).size();
-        for (List<Point> path : paths) {
-            if (path.size() < shortest) {
-                shortest = path.size();
-            }
-        }
+
+        List<Point> coordinatesToCheck = new ArrayList<>();
+        coordinatesToCheck.add(startingPoing);
+
+        int shortest = findShortestPath(coordinatesToCheck, new ArrayList<>(), 1);
         return shortest;
     }
 
-    static List<Point> findPath(Point coordinate, List<Point> path) {
-        if (maze[coordinate.x][coordinate.y].equals('E')) {
-            return path;
+    static int findShortestPath(List<Point> coordinatesToCheck, List<Point> previousCoordinates, int count) {
+
+        List<Point> newCoordinatesToCheck = new ArrayList<>();
+        List<Point> updatedPreviousCoordinates = new ArrayList<>(List.copyOf(previousCoordinates));
+
+        for (Point coordinate : coordinatesToCheck) {
+            updatedPreviousCoordinates.add(coordinate);
+            List<Point> surroundingCoordinates = calculateSurroundingCoordinates(coordinate.x, coordinate.y)
+                    .stream()
+                    .filter(point -> point.x >= 0)
+                    .filter(point -> point.x < maze.length)
+                    .filter(point -> point.y >= 0)
+                    .filter(point -> point.y < maze[0].length)
+                    .filter(point -> !maze[point.x][point.y].equals('#'))
+                    .filter(point -> !updatedPreviousCoordinates.contains(point))
+                    .collect(Collectors.toList());
+            for (Point surroundingCoordinate : surroundingCoordinates) {
+                newCoordinatesToCheck.add(surroundingCoordinate);
+            }
         }
 
-        List<Point> coordinatesToCheck = calculateSurroundingCoordinates(coordinate.x, coordinate.y)
-                .stream()
-                .filter(point -> point.x >= 0)
-                .filter(point -> point.x < maze.length)
-                .filter(point -> point.y >= 0)
-                .filter(point -> point.y < maze[0].length)
-                .filter(point -> !maze[point.x][point.y].equals('#'))
-                .filter(point -> !path.contains(point))
-                .collect(Collectors.toList());
-        for (Point coordinateToCheck : coordinatesToCheck) {
-            path.add(coordinateToCheck);
-            return findPath(coordinateToCheck, path);
+        for (Point newCoordinate : newCoordinatesToCheck) {
+            if (maze[newCoordinate.x][newCoordinate.y].equals('E')) {
+                return count;
+            }
         }
 
-        return path;
+        if (newCoordinatesToCheck.size() == 0) {
+            return 0;
+        }
+
+        return findShortestPath(newCoordinatesToCheck, updatedPreviousCoordinates, count + 1);
     }
 
     static private List<Point> calculateSurroundingCoordinates(int row, int col) {
