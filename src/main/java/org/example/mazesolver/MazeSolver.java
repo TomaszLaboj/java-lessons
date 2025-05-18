@@ -9,9 +9,9 @@ public class MazeSolver {
 
     static Character[][] maze = {
             {'#', '#', '#', '#', '#'},
-            {'#', 'S', ' ', ' ', '#'},
+            {'#', 'S', ' ', 'E', '#'},
             {'#', ' ', '#', ' ', '#'},
-            {'#', ' ', 'E', ' ', '#'},
+            {'#', ' ', ' ', ' ', '#'},
             {'#', '#', '#', '#', '#'},
     };
 
@@ -48,6 +48,10 @@ public class MazeSolver {
 
         for (Point coordinate : coordinatesToCheck) {
             updatedPreviousCoordinates.add(coordinate);
+        }
+
+        for (Point coordinate : coordinatesToCheck) {
+
             List<Point> surroundingCoordinates = calculateSurroundingCoordinates(coordinate.x, coordinate.y)
                     .stream()
                     .filter(point -> point.x >= 0)
