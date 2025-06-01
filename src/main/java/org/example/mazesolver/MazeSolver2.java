@@ -41,11 +41,11 @@ public class MazeSolver2 {
     };
 
     public static void main(String[] args) {
-        List<MyPoint> path = findShortestPath();
+        List<MyPoint> path = findStartingPointAndPath();
         System.out.println("path is: " + path + ", length is: " + path.size());
     }
 
-    static List<MyPoint> findShortestPath() {
+    static List<MyPoint> findStartingPointAndPath() {
 
         MyPoint startingPoint = new MyPoint();
         for (int row = 0; row < maze.length; row++) {
@@ -66,10 +66,10 @@ public class MazeSolver2 {
         return findShortestPath(coordinatesToCheck, new ArrayList<>(), 1);
     }
 
-    static List<MyPoint> findShortestPath(List<MyPoint> coordinatesToCheck, List<MyPoint> previousCoordinates, int count) {
+    static List<MyPoint> findShortestPath(List<MyPoint> coordinatesToCheck, List<MyPoint> coordinatesHistory, int count) {
 
         List<MyPoint> newCoordinatesToCheck = new ArrayList<>();
-        List<MyPoint> updatedPreviousCoordinates = new ArrayList<>(List.copyOf(previousCoordinates));
+        List<MyPoint> updatedPreviousCoordinates = new ArrayList<>(List.copyOf(coordinatesHistory));
 
         for (MyPoint coordinate : coordinatesToCheck) {
             updatedPreviousCoordinates.add(coordinate);
