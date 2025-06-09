@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MazeSolver2 {
+public class MazeSolverBFS {
 
     static class MyPoint extends Point {
         public MyPoint parent;
