@@ -20,5 +20,7 @@ public class RunRadioDevice {
         radioDevice.insertCard();
         radioDevice.powerButton();
         radioDevice.leftButton();
+        radioDevice.rightButton();
+        radioDevice.powerButton();
     }
 }
