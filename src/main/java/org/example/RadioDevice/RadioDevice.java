@@ -1,17 +1,23 @@
 package org.example.RadioDevice;
-
-import java.sql.Time;
 import java.time.LocalTime;
 
 public class RadioDevice {
-
     boolean power;
     boolean cardInserted;
 
-    Track track;
+
+    Mode mode = Mode.HOME;
+
+    public RadioDevice() {
+        this.n = 0;
+    }
+
+    Radio radio = new Radio();
+    Player player;
 
     public class Radio {
         RadioMode radioMode = dayOrNight();
+
         public enum RadioMode {
             DAY,
             NIGHT
@@ -23,27 +29,41 @@ public class RadioDevice {
 
         RadioMode dayOrNight() {
             if (getTime().isAfter(LocalTime.of(6,0)) && getTime().isBefore(LocalTime.of(22,0))) {
-                return RadioMode.NIGHT;
+                return RadioMode.DAY;
             }
             if (getTime().isAfter(LocalTime.of(22,0)) || getTime().isBefore(LocalTime.of(6,0))) {
-                return RadioMode.DAY;
+                return RadioMode.NIGHT;
             }
             return null;
         }
     }
 
-    public class Mode {
-        Screen screen;
+    public class Player {
+        int track = 1;
 
-        void cycleScreen() {
-
+        void nextTrack() {
+            if (track < 3) {
+                track = track + 1;
+            }
+            printTrackNo();
         }
 
-        public enum Screen {
-            HOME,
-            DAILY_PODCAST,
-            RADIO
+        void previousTrack() {
+            if (track > 1) {
+                track = track - 1;
+            }
+            printTrackNo();
         }
+
+        void printTrackNo() {
+            System.out.println("Track: " + track);
+        }
+    }
+
+    public enum Mode {
+        HOME,
+        DAILY_PODCAST,
+        RADIO,
     }
 
     public enum TimeOfDay {
@@ -51,34 +71,75 @@ public class RadioDevice {
         NIGHT
     }
 
-    public enum Track {
-        TRACK_1,
-        TRACK_2,
-        TRACK_3
-    }
+
 
     void powerButton() {
         power = !power;
         System.out.println(power ? "POWER ON" : "POWER OFF");
+        if (power) {
+            if(cardInserted) {
+                player.printTrackNo();
+            } else {
+                System.out.println(mode);
+                if (mode == Mode.RADIO) {
+                    radio.getRadioMode();
+                }
+            }
+        }
     };
 
-    void rightButton() {};
+    void rightButton() {
+        if (power) {
+            if(cardInserted) {
+                player.nextTrack();
+            } else {
+                cycleMode();
 
-    void leftButton() {};
+                if (mode == Mode.RADIO) {
+                    System.out.println(mode.toString() + " " + radio.getRadioMode());
+                } else {
+                    System.out.println(mode);
+                }
+            }
+        }
+    };
+
+    void leftButton() {
+        if (power) {
+            if(cardInserted) {
+                player.previousTrack();
+            }
+        }
+    };
 
     void insertCard() {
         cardInserted = true;
+        player = new Player();
         if (power) {
-            track = Track.TRACK_1;
+            player.printTrackNo();
         }
     };
 
     void removeCard() {
         cardInserted = false;
-        track = null;
+        player = null;
+        if (power) {
+            System.out.println(mode);
+        }
     };
 
     static LocalTime getTime() {
         return LocalTime.now();
     };
+
+    Mode[] listOfModes = new Mode[]{Mode.HOME, Mode.DAILY_PODCAST, Mode.RADIO};
+    int n;
+    void cycleMode() {
+        if (n == 2) {
+            n = 0;
+        } else {
+            n = n + 1;
+        }
+        mode = listOfModes[n];
+    }
 }
